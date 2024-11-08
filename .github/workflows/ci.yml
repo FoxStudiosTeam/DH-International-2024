@@ -27,6 +27,7 @@ jobs:
       run: |
         make setup-project
 
+    - name: Finalize Release files
       uses: AButler/upload-release-assets@v3.0
       with:
         files: "*.exe"
