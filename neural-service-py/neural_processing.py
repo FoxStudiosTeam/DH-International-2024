@@ -54,20 +54,24 @@ def processing():
                         #add info to report
                         flag: bool = False
                         for box in boxes:
-                            report.append({"name":f"{file_name.split('/')[-1]}", "BBox":box[1],"Class":box[0]})
                             img_width = img.shape[1]
                             img_heght = img.shape[0]
                             x1, x2 = int((box[1][0]-box[1][2]/2)*img_width), int((box[1][0]+box[1][2]/2)*img_width)
                             y1, y2 = int((box[1][1]-box[1][3]/2)*img_heght), int((box[1][1]+box[1][3]/2)*img_heght)
+                            if x2-x1 < 128 or y2-y1 < 128:
+                                box[0]="bad"
+                                print("\nbad")
                             cv2.rectangle(img,[x1,y1],[x2,y2],colors[box[0]],4)
                             cv2.putText(img,box[0],(x1-10,y1-10),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),4)
                             flag = True
+
+                            report.append({"name":f"{file_name.split('/')[-1]}", "BBox":box[1],"Class":box[0]})
                         if flag:
                             print(file_name.split('/')[-1])
                             img = cv2.resize(img,(620,480))
                             cv2.imshow("pivo", img)
                             cv2.waitKey(1)
-                            time.sleep(0.5)
+                            time.sleep(3)
                             cv2.destroyAllWindows
                             flag = False
                     else:
