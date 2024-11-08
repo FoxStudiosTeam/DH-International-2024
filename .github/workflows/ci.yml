@@ -9,26 +9,43 @@ on:
     branches: [ "*", "*/*"  ]
 
 jobs:
-  build:
+  create-pull-request:
     runs-on: ubuntu-latest
-
+    permissions:
+      pull-requests: write
+      contents: read
     steps:
-    - name: create pull request
-      run: gh pr create -B base_branch -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - uses: actions/checkout@v4
+      - name: Create Label if it doesn't exist
+        run: |
+          if ! gh label list | grep -q 'automated-pr'; then
+            gh label create 'automated-pr' --color 'f29559'
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build Python libs
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-      id: libs
-      shell: bash
-      run: |
-        make setup-project
-      with:
-        - uses: AButler/upload-release-assets@v3.0
-          with:
-            files: "*.exe"
-            repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check for existing pull request
+        run: |
+          if gh pr list --base main --head agniaendie/pipelines --json state -q '.[].state' | grep -q 'OPEN'; then
+            echo "Pull request already exists."
+            echo "exists=true" >> $GITHUB_ENV
+          else
+            echo "No existing pull request."
+            echo "exists=false" >> $GITHUB_ENV
+          fi
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create Pull Request
+        if: env.exists == 'false'  # Only run this step if no existing PR
+        run: |
+          gh pr create \
+            --base main \
+            --head agniaendie/pipelines \
+            --title "Merge agniaendie/pipelines into main" \
+            --body "Automated pull request created by GitHub Actions."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
