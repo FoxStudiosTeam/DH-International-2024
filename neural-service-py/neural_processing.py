@@ -24,11 +24,11 @@ def parse_result(data: list[Results]):
 def processing():
 
     #path to zip file
-    zip_path = "./neural-service-py/Артём.zip"
+    zip_path = "./neural-service-py/zip_file.zip"
     
 
     #path to model
-    model_path = "./neural-service-py/best (2).pt"
+    model_path = "./neural-service-py/model"
 
     model : YOLO = YOLO(model_path)
     report: list[dict] = []
