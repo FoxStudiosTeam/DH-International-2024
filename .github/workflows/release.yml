@@ -1,0 +1,31 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Build Python libs
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: libs
+      shell: bash
+      run: |
+        make setup-project
+
+    - name: Finalize Release files
+      uses: AButler/upload-release-assets@v3.0
+      with:
+        files: "*.exe"
+        repo-token: ${{ secrets.GITHUB_TOKEN }}

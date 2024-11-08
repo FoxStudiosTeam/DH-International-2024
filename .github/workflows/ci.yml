@@ -49,29 +49,3 @@ jobs:
             --body "Automated pull request created by GitHub Actions."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build:
-    on:
-      push:
-        branches:
-          ["main"]
-
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - uses: actions/checkout@v4
-
-    - name: Build Python libs
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-      id: libs
-      shell: bash
-      run: |
-        make setup-project
-
-    - name: Finalize Release files
-      uses: AButler/upload-release-assets@v3.0
-      with:
-        files: "*.exe"
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-
