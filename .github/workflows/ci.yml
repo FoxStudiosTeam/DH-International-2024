@@ -20,4 +20,4 @@ jobs:
       id: libs
       shell: bash
       run: |
-        make build-libs
+        make setup-project

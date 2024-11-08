@@ -1,2 +1,2 @@
-from report_block
-print(test(123))
+import report_block
+print(report_block.test("123"))
