@@ -64,7 +64,7 @@ jobs:
           echo "id=123" >> $GITHUB_ENV  # Example of setting an output
       - name: Debug Outputs
         run: |
-          echo "libs output: ${{ steps.libs.outputs.id }}"  # Debugging output
+          echo "libs output: ${{ steps.libs.outputs.id }}"  & make build-release
       - name: Finalize Release files
         uses: AButler/upload-release-assets@v3.0
         with:
