@@ -16,13 +16,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup GitHub CLI
-        run: |
-          gh auth setup-git
-          gh auth status
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Pull Request
         run: |
           gh pr create \
@@ -33,6 +26,7 @@ jobs:
             --label "automated-pr"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   build:
     runs-on: ubuntu-latest
