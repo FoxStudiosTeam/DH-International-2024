@@ -1,1 +1,2 @@
-print(1234)
+from report_block
+print(test(123))

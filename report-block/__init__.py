@@ -1,1 +1,1 @@
-from lib import test
+from report_block import test
