@@ -52,6 +52,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: [create-pull-request]
     steps:
       - uses: actions/checkout@v4
       - name: Build Python libs
@@ -71,4 +72,3 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-id: 42
           release-tag: v0.0.1
-        needs: [create-pull-request]
