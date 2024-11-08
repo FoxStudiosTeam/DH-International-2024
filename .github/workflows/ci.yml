@@ -11,11 +11,21 @@ on:
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write  # Grant write access to pull requests
+      contents: read        # Grant read access to repository contents
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      - name: Create Label if it doesn't exist
+        run: |
+          if ! gh label list | grep -q 'automated-pr'; then
+            gh label create 'automated-pr' --color 'f29559'
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Pull Request
         run: |
           gh pr create \
@@ -26,6 +36,8 @@ jobs:
             --label "automated-pr"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Найти еще
 
 
   build:
