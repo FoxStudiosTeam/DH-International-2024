@@ -28,7 +28,7 @@ def processing():
     
 
     #path to model
-    model_path = "./neural-service-py/model"
+    model_path = "./neural-service-py/best.pt"
 
     model : YOLO = YOLO(model_path)
     report: list[dict] = []
