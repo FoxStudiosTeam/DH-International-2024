@@ -68,7 +68,7 @@ jobs:
       - name: Finalize Release files
         uses: AButler/upload-release-assets@v3.0
         with:
-          files: "*.exe"
+          files: "/local/*.exe"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-id: 42
           release-tag: v0.0.1
