@@ -26,9 +26,9 @@ jobs:
       shell: bash
       run: |
         make setup-project
-    with:
-      - uses: AButler/upload-release-assets@v3.0
-        with:
-          files: "*.exe"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        - uses: AButler/upload-release-assets@v3.0
+          with:
+            files: "*.exe"
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
 
