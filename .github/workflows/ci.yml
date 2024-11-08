@@ -37,9 +37,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  Найти еще
-
-
   build:
     runs-on: ubuntu-latest
 
