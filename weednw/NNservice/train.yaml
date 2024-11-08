@@ -1,0 +1,6 @@
+path: C:\\Msk HAck\\train_data_minprirodi
+train: train
+val: val
+
+nc: 2
+names: ['bad' , ' good']
