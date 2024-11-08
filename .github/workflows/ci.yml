@@ -51,6 +51,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
+    on:
+      push:
+        branches:
+          ["main"]
+
     runs-on: ubuntu-latest
 
     steps:
