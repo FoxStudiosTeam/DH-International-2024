@@ -1,0 +1,34 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CI
+
+on:
+  push:
+    branches: [ "*", "*/*" ]
+  pull_request:
+    branches: [ "*", "*/*"  ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: create pull request
+      run: gh pr create -B base_branch -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: actions/checkout@v4
+
+    - name: Build Python libs
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: libs
+      shell: bash
+      run: |
+        make setup-project
+    with:
+      - uses: AButler/upload-release-assets@v3.0
+        with:
+          files: "*.exe"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+

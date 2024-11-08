@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "report_block"
+version = "0.0.1"
+authors = [
+  { name="Endienasg", email="endienasg2@gmail.com" },
+]
+description = "Neural block of report system of AnimalDetect"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/FoxStudiosTeam/DH-International-2024"
+Issues = "https://github.com/FoxStudiosTeam/DH-International-2024/issues"
