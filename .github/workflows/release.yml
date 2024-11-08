@@ -26,3 +26,5 @@ jobs:
         with:
           files: "*.exe"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-id: 42
+          release-tag: v0.0.1
