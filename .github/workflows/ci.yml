@@ -26,6 +26,19 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for existing pull request
+        run: |
+          if gh pr list --base main --head agniaendie/pipelines --json state -q '.[].state' | grep -q 'OPEN'; then
+            echo "Pull request already exists."
+            echo "exists=true" >> $GITHUB_ENV
+          else
+            echo "No existing pull request."
+            echo "exists=false" >> $GITHUB_ENV
+          fi
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Pull Request
         run: |
           gh pr create \
