@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: create pull request
+      run: gh pr create -B base_branch -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - uses: actions/checkout@v4
 
     - name: Build Python libs
@@ -26,3 +31,4 @@ jobs:
         with:
           files: "*.exe"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
