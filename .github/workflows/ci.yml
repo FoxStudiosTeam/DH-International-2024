@@ -40,13 +40,13 @@ jobs:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
+        if: env.exists == 'false'  # Only run this step if no existing PR
         run: |
           gh pr create \
-            --base "${{ github.event.inputs.base_branch || 'main' }}" \
-            --head "${{ github.event.inputs.branch_to_merge }}" \
-            --title "Merge ${{ github.event.inputs.branch_to_merge }} into ${{ github.event.inputs.base_branch || 'main' }}" \
-            --body "Created by Github action" \
-            --label "automated-pr"
+            --base main \
+            --head agniaendie/pipelines \
+            --title "Merge agniaendie/pipelines into main" \
+            --body "Automated pull request created by GitHub Actions."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
