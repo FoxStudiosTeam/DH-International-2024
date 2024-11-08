@@ -4,9 +4,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "*", "*/*" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*", "*/*"  ]
 
 jobs:
   build:
@@ -21,3 +21,8 @@ jobs:
       shell: bash
       run: |
         make setup-project
+    with:
+      - uses: AButler/upload-release-assets@v3.0
+        with:
+          files: "*.exe"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
