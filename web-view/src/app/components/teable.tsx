@@ -27,6 +27,19 @@ const data: DataRow[] = [
 ];
 
 export function Table() {
+    // function handleDownloadPDF() {
+    //   window.print(); // Откроет диалог печати
+    // }
+    //
+    // return (
+    //     <div>
+    //       <div style={{ padding: '20px' }}>
+    //         <h1>Содержимое страницы для скачивания</h1>
+    //         <p>Здесь можно разместить любой контент, который вы хотите включить в PDF.</p>
+    //       </div>
+    //       <button onClick={handleDownloadPDF}>Скачать как PDF</button>
+    //     </div>
+    // );
     const rowsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(data.length / rowsPerPage);

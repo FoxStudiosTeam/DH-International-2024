@@ -22,6 +22,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app",     // добавьте папку app, если она используется
+    "src",     // добавьте папку src, если она используется
+    "components" // добавьте папку components, если она используется
+  ],
   "exclude": ["node_modules"]
 }
