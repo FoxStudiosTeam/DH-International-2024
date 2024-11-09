@@ -30,10 +30,10 @@ class Process():
         colors = {" good": [0,255,0], "bad": [0,0,255]}
 
         #path to zip file
-        zip_path = "./neural-service-py/images1.zip"
+        zip_path = "./neural_service_py/images.zip"
 
         #path to model
-        model_path = "./neural-service-py/best(4).pt"
+        model_path = "./neural_service_py/11x.pt"
         
         model : YOLO = YOLO(model_path)
         report: list[ReportUnit] = []
