@@ -9,7 +9,7 @@ interface DataRow {
 }
 
 const data: DataRow[] = [
-    { id: 1, uploadDate: "2023-11-09", filePath: "/path/to/file1", category: "Class A" },
+    { id: 1, uploadDate: "2023-11-09 18.31.01", filePath: "/path/to/file1", category: "Хорошее качество" },
     { id: 2, uploadDate: "2023-11-09", filePath: "/path/to/file2", category: "Class B" },
     { id: 3, uploadDate: "2023-11-09", filePath: "/path/to/file3", category: "Class C" },
     { id: 4, uploadDate: "2023-11-09", filePath: "/path/to/file1", category: "Class A" },
