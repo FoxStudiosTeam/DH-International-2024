@@ -8,6 +8,9 @@ from .api_utils import wrap_answer
 from neural_service_py import neural_processing
 from .db_utils import *
 
+import io
+import csv
+
 
 class NeuralServiceImpl:
     def __init__(self):
@@ -19,11 +22,14 @@ class NeuralServiceImpl:
         response = None
         for file in files:
             if file.filename.endswith('.zip'):
-                result = self.process.processing(uid, file.read())
+                result = self.process.processing_zip(uid, file.read())
+                response = self.write_report(result, uid)
+            elif file.filename.endswith('.rar'):
+                result = self.process.processing_rar(uid, file.read())
                 response = self.write_report(result, uid)
             elif file.filename.endswith('.png') or file.filename.endswith('.jpg') or file.filename.endswith(
                     '.jpeg'):
-                result = self.process.processing(uid, file.read())
+                result = self.process.processing_img(uid, file.read(), file.filename)
                 response = self.write_report(result, uid)
 
         if response is None:
@@ -36,9 +42,9 @@ class NeuralServiceImpl:
         try:
             for report_row in report_data:
                 cur.execute(
-                    "INSERT INTO report_data (uid, data_upload, file_path, class_num, confidence, report_uid) VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO report_data (uid, data_upload, file_path, class_num, confidence, report_uid, file_name, bbox) VALUES (?,?,?,?,?,?,?,?)",
                     (report_row.uid, report_row.data_upload, report_row.file_path, report_row.class_num,
-                     report_row.confidence, uid))
+                     report_row.confidence, uid, report_row.Name, str.join(report_row.BBox," ")))
                 cur.fetchone()
 
             cur.close()
@@ -55,22 +61,34 @@ class NeuralServiceImpl:
         response.status_code = status_code
         return response
 
-    # def get_neural_report_data_csv(self, uid) -> bytes:
-    #     data : list[ReportRow] = self.get_neural_report_data_content(uid)
-    #     return bytes(data)
+    def get_neural_report_data_csv(self, uid) -> bytes:
+        data : list[ReportUnit] = self.get_neural_report_data_content(uid)
+        # with open('report.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ["Name", "BBox", "Class"]
+        csv_file = io.StringIO()
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        writer.writeheader()
+
+        for row in data:
+            writer.writerow({"Name": row.Name, "BBox": row.BBox, "Class": row.Class})
+        
+        return bytes(csv_file)
 
 
     def get_neural_report_data(self, uid) -> Response:
         return wrap_answer(self.get_neural_report_data_content(uid))
 
-    def get_neural_report_data_content(self, uid) -> list[ReportRow]:
+    def get_neural_report_data_content(self, uid) -> list[ReportUnit]:
         cur = init_cursor(self.conn)
         try:
             cur.execute("SELECT * FROM report_data WHERE report_uid=?", (uid,))
             rows = cur.fetchall()
-            result: list[ReportRow] = []
+            result: list[ReportUnit] = []
+            if row[3] == "0": name = "bad"
+            elif row[3] == "1": name = "good"
             for row in rows:
-                result.append(ReportRow(row[0], row[1], [2], row[3], row[4], row[5]))
+                result.append(ReportUnit(row[2], [name,[float(row[7].split(" "))], float(row[4]),], row[5]))
             cur.close()
             return result
         except sqlite3.OperationalError:

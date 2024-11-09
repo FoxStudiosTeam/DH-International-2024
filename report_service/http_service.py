@@ -42,9 +42,9 @@ def get_neural_report_data(uid : str):
 def remove_neural_report_data(uid : str):
     return neuralSubscriber.remove_neural_report_data(uid)
 
-# @api.route('/api/v1/neural/reports/csv/<uid>', methods=["GET"])
-# def get_neural_report_data_csv (uid : str):
-#     return neuralSubscriber.get_neural_report_data_csv(uid)
+@api.route('/api/v1/neural/reports/csv/<uid>', methods=["GET"])
+def get_neural_report_data_csv (uid : str):
+    return neuralSubscriber.get_neural_report_data_csv(uid)
 
 if __name__ == '__main__':
     api.run(debug=False, host='0.0.0.0', port=8080)
