@@ -14,11 +14,12 @@ def output_to_csv() -> str:
 
     #print to test output
     for row in report:
-        print(json.dumps(row))
+        print(json.dumps(row,ensure_ascii=False))
     print(f"Занятое время: {(time.time()-start_time)} сек")
 
     #json string with {"name":"file name", "BBox": [Number x, y, w, h], "Class": "class name of bbox (0 or 1)"}
-    return json.dumps(report)
+    result_string = json.dumps(report, ensure_ascii=False)
+    return result_string
 
 
 #output to report
@@ -26,7 +27,8 @@ def output_to_report() -> str:
     report: list[dict] = processing()[1]
 
     #json string with {"name":"file name", "BBox": [Number x, y, w, h], "Class": "class name of bbox (0 or 1)"}
-    return json.dumps(report)
+    result_string = json.dumps(report, ensure_ascii=False)
+    return result_string
 
 
 #private func to bboxes
