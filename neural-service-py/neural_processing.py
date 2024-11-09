@@ -30,7 +30,7 @@ def output_to_report() -> str:
 
 
 #private func to bboxes
-def parse_result(data: Results, img:cv2.typing.MatLike) -> list[list]:
+def parse_result(data: Results) -> list[list]:
     boxes: list[list] = []
     for box in data.boxes:
         x,y,w,h = map(float, box.xywhn.cpu().numpy().reshape(-1))
@@ -88,7 +88,7 @@ def processing() -> tuple[list[dict]]:
                         #images processing
                         results_batch = model.predict(images)
                         for img, results, img_name in zip(images,results_batch,img_names):
-                            boxes = parse_result(results, img)
+                            boxes = parse_result(results)
                             flag: bool = False
                             for box in boxes:
 
