@@ -44,7 +44,7 @@ jobs:
         run: |
           gh pr create \
             --base main \
-            --head agniaendie/pipelines \
+            --head main \
             --title "Merge ${{github.ref }} into main" \
             --body "Automated pull request created by GitHub Actions."
         env:
