@@ -215,14 +215,11 @@ class Process:
                         else:
                             print(f"Нет изображения в {file_name}")
         return report
-    
-    def processing_img(self, report_uid: str, img_file, img_name) -> list[object]:
+
+    def processing_img(self, report_uid: str, file, img_name) -> list[object]:
 
         # colors to bboxes
         colors = {" good": [0, 255, 0], "bad": [0, 0, 255]}
-
-        # path to zip file (in-memory)
-        img_path = io.BytesIO(img_file)
 
         # path to model
         model_path = "./neural_service_py/best_23_54.pt"
@@ -231,56 +228,56 @@ class Process:
         report: list[ReportUnit] = []
 
         # open file
-        with open(img_path) as file:
-            file_bytes = np.asanyarray(bytearray(file.read()), dtype=np.uint8)
-            image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-            if image is not None:
 
-                # images processing
-                result = model.predict(image)
-                boxes = self.parse_result(result)
-                flag: bool = False
-                for box in boxes:
+        file_bytes = np.fromstring(file,np.uint8)
+        image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+        if image is not None:
 
-                    # check to confidence
-                    if box[2] > 0.7:
-                        img_width = img.shape[1]
-                        img_heght = img.shape[0]
-                        x1, x2 = int((box[1][0] - box[1][2] / 2) * img_width), int(
-                            (box[1][0] + box[1][2] / 2) * img_width)
-                        y1, y2 = int((box[1][1] - box[1][3] / 2) * img_heght), int(
-                            (box[1][1] + box[1][3] / 2) * img_heght)
+            # images processing
+            result = model.predict(image)[0]
+            boxes = self.parse_result(result)
+            flag: bool = False
+            for box in boxes:
 
-                        # image exclusion
-                        if x2 - x1 < 128 or y2 - y1 < 128:
-                            box[0] = "bad"
+                # check to confidence
+                if box[2] > 0.7:
+                    img_width = img.shape[1]
+                    img_heght = img.shape[0]
+                    x1, x2 = int((box[1][0] - box[1][2] / 2) * img_width), int(
+                        (box[1][0] + box[1][2] / 2) * img_width)
+                    y1, y2 = int((box[1][1] - box[1][3] / 2) * img_heght), int(
+                        (box[1][1] + box[1][3] / 2) * img_heght)
 
-                        # box drawing
-                        if box[0] == 'bad':
-                            box_name = '0'
-                        else:
-                            box_name = '1'
-                        cv2.rectangle(img, [x1, y1], [x2, y2], colors[box[0]], 4)
-                        cv2.putText(img, f"{box_name} - {round(box[2], 4)}", (x1 + 10, y1 + 30),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 9)
-                        cv2.putText(img, f"{box_name} - {round(box[2], 4)}", (x1 + 10, y1 + 30),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 4)
+                    # image exclusion
+                    if x2 - x1 < 128 or y2 - y1 < 128:
+                        box[0] = "bad"
 
-                        # flag if boxes exist
-                        flag = True
+                    # box drawing
+                    if box[0] == 'bad':
+                        box_name = '0'
+                    else:
+                        box_name = '1'
+                    cv2.rectangle(img, [x1, y1], [x2, y2], colors[box[0]], 4)
+                    cv2.putText(img, f"{box_name} - {round(box[2], 4)}", (x1 + 10, y1 + 30),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 9)
+                    cv2.putText(img, f"{box_name} - {round(box[2], 4)}", (x1 + 10, y1 + 30),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 4)
 
-                        # add result dict to report list
-                        report.append(ReportUnit(img_name, box, report_uid))
+                    # flag if boxes exist
+                    flag = True
 
-                    # show img and pring file name
-                    if flag:
-                        print(img_name)
-                        img = cv2.resize(img, (620, 480))
-                        cv2.imshow("pivo", img)
-                        cv2.waitKey(1)
-                        time.sleep(2)
-                        cv2.destroyAllWindows()
-                        flag = False
-            else:
-                print(f"Нет изображения в {img_name}")
+                    # add result dict to report list
+                    report.append(ReportUnit(img_name, box, report_uid))
+
+                # show img and pring file name
+                if flag:
+                    print(img_name)
+                    img = cv2.resize(img, (620, 480))
+                    cv2.imshow("pivo", img)
+                    cv2.waitKey(1)
+                    time.sleep(2)
+                    cv2.destroyAllWindows()
+                    flag = False
+        else:
+            print(f"Нет изображения в {img_name}")
         return report
