@@ -51,12 +51,12 @@ class Process:
 
                     # open img
                     with zip_file.open(file_name) as file:
-                        if batch < 10:
-                            batch += 1
-                            file_bytes = np.asanyarray(bytearray(file.read()), dtype=np.uint8)
-                            image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-                            images.append(image)
-                            img_names.append(file_name)
+                        batch += 1
+                        file_bytes = np.asanyarray(bytearray(file.read()), dtype=np.uint8)
+                        image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+                        images.append(image)
+                        img_names.append(file_name)
+                        if batch < 10 and file_name != zip_file.namelist()[-1]:
                             continue
                         batch = 0
                         if image is not None:
