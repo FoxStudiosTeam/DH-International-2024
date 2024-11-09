@@ -2,7 +2,6 @@ import sqlite3
 import uuid
 from datetime import datetime
 
-from adodbapi import OperationalError
 from db_utils import *
 from api_utils import *
 from models import Report, Message, ReportRequest
@@ -63,8 +62,9 @@ class ReportService:
     def delete_report(self, uid) -> bytes:
         cur = self.init_cursor()
         try:
+            cur.execute("DELETE FROM report_data where report_uid = ?", (uid,))
             cur.execute("DELETE FROM reports where uid = ?", (uid,))
-            cur.fetchone()
+            cur.fetchall()
             cur.close()
             self.conn.commit()
             message = Message(f"deleted - {uid}")
