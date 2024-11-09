@@ -21,7 +21,7 @@ def output() -> str:
     return json.dumps(report)
 
 #private func to bboxes
-def parse_result(data: list[Results], img:cv2.typing.MatLike) -> list[list]:
+def parse_result(data: Results, img:cv2.typing.MatLike) -> list[list]:
     boxes: list[list] = []
     for box in data.boxes:
         x,y,w,h = map(float, box.xywhn.cpu().numpy().reshape(-1))
@@ -117,5 +117,6 @@ def processing() -> list[dict]:
                         img_names.clear()
                     else:
                         print(f"Нет изображения в {file_name}")
+    return report
 #test
 output()
