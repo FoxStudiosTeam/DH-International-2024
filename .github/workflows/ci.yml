@@ -35,6 +35,7 @@ jobs:
           else
             echo "No existing pull request."
             echo "exists=false" >> $GITHUB_ENV
+            echo ${{env.can_create_pr}}
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
