@@ -4,6 +4,10 @@ import axios from "axios";
 import {Header} from "@/app/components/cap";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
+import add from "@/assets/Add.svg";
+import edit from "@/assets/Add.svg";
+import del from "@/assets/Add.svg";
+
 
 
 interface ReportData {
@@ -180,7 +184,7 @@ export default function Home() {
                 </div>
 
                 {/* Фиксированные кнопки пагинации внизу */}
-                <div className="fixed bottom-0 left-0 w-full flex justify-center bg-[#29323c] p-4">
+                <div className="fixed bottom-5 right-5 w-full flex justify-center p-4">
                     <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
