@@ -3,4 +3,4 @@
 
 ### Документация 
 В папке [doc](doc/) находится документация к проекту:
-    <br> Документация к апи - [api.md](doc/api.md)
+    <br> Документация к апи - [api.md](https://github.com/FoxStudiosTeam/DH-International-2024/blob/main/doc/api.md)

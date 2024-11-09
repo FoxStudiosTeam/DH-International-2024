@@ -12,7 +12,7 @@ class ReportService:
         self.conn = sqlite3.connect('reports.db', check_same_thread=False)
 
 
-    def get_reports(self) -> bytes:
+    def get_reports(self) -> Response:
         cur = init_cursor(self.conn)
         try:
             query = cur.execute("SELECT * FROM reports")
@@ -27,7 +27,7 @@ class ReportService:
             migrate(cur)
             return self.get_reports()
 
-    def get_report(self, uid) -> bytes:
+    def get_report(self, uid) -> Response:
         cur = init_cursor(self.conn)
         try:
             cur.execute("SELECT * FROM reports WHERE uid=? LIMIT 1", (uid,))
@@ -40,14 +40,14 @@ class ReportService:
         except TypeError:
             return wrap_answer(Message("NotFound"))
 
-    def create_report(self) -> bytes:
+    def create_report(self) -> Response:
         cur = init_cursor(self.conn)
         uid = str(uuid.uuid4())
         date = datetime.now()
         title = f"Отчёт от {date.date()}"
 
         try:
-            cur.execute("INSERT INTO reports (uid, title, create_date) VALUES (?,?,?)", (uid, str(date), title))
+            cur.execute("INSERT INTO reports (uid, title, create_date) VALUES (?,?,?)", (uid, title,str(date)))
             cur.fetchone()
             cur.close()
             self.conn.commit()
@@ -57,7 +57,7 @@ class ReportService:
             migrate(cur)
             return self.create_report()
 
-    def delete_report(self, uid) -> bytes:
+    def delete_report(self, uid) -> Response:
         cur = init_cursor(self.conn)
         try:
             cur.execute("DELETE FROM report_data where report_uid = ?", (uid,))
@@ -71,7 +71,7 @@ class ReportService:
             migrate(cur)
             return self.delete_report(uid)
 
-    def update_report(self, uid, raw_data) -> bytes:
+    def update_report(self, uid, raw_data) -> Response:
         cur = init_cursor(self.conn)
         data = json.loads(raw_data)
         report = ReportRequest(title=data.get('title'))

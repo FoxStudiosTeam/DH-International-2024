@@ -28,3 +28,12 @@ class ReportUnit:
         self.Name:str = file_name.split('/')[-1]
         self.BBox:list[float] = result[1]
         self.Class:str = "0" if result[0] == "bad" else "1"
+
+class ReportRow:
+    def __init__(self, uid, data_upload, file_path, class_num,confidence, report_uid):
+        self.uid:str = uid
+        self.data_upload:str = data_upload
+        self.file_path:str = file_path
+        self.class_num:str = class_num
+        self.confidence:float = confidence
+        self.report_uid:str = report_uid
