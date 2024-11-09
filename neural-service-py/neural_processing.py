@@ -80,7 +80,7 @@ def processing() -> tuple[list[dict]]:
                         batch += 1
                         images.append(image)
                         img_names.append(file_name)
-                        if batch < 100 and file_name!=zip_file.namelist()[-1]:
+                        if batch < 10 and file_name!=zip_file.namelist()[-1]:
                             continue
                         batch = 0
                         last_time = time.time()
@@ -112,12 +112,12 @@ def processing() -> tuple[list[dict]]:
                                     flag = True
 
                                     #add result dict to report list
-                                    report_csv.append({"name":f"{img_name.split('/')[-1]}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
-                                    report.append({"name":f"{img_name.split('/')[-1]}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
+                                    report_csv.append({"name":f"{"/".join(img_name.split('/')[-3:])}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
+                                    report.append({"name":f"{"/".join(img_name.split('/')[-3:])}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
 
                             #show img and pring file name
                             if flag:
-                                print(img_name.split('/')[-1])
+                                print("/".join(img_name.split('/')[-3:]))
                                 img = cv2.resize(img,(620,480))
                                 cv2.imshow("pivo", img)
                                 cv2.waitKey(0)
