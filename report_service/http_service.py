@@ -32,7 +32,7 @@ neuralSubscriber = NeuralServiceImpl()
 
 @api.route('/api/v1/neural/upload_report/<uid>', methods=["POST"])
 def upload_report(uid : str):
-    return Response(neuralSubscriber.upload_report(uid, request.form), content_type='application/json')
+    return Response(neuralSubscriber.upload_report(uid, request.files), content_type='application/json')
 
 if __name__ == '__main__':
-    api.run(debug=True, host='0.0.0.0', port=8080)
+    api.run(debug=False, host='0.0.0.0', port=8080)
