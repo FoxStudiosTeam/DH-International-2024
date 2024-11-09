@@ -37,10 +37,10 @@ jobs:
             echo "exists=false" >> $GITHUB_ENV
           fi
         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
-        if: env.exists == 'false'  # Only run this step if no existing PR
+        if: env.exists == 'false' && github.ref != 'main' # Only run this step if no existing PR
         run: |
           gh pr create \
             --base main \
