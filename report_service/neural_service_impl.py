@@ -76,14 +76,14 @@ class NeuralServiceImpl:
 
     def get_neural_report_data_csv(self, uid) -> Response:
         data: list[ReportUnit] = self.get_neural_report_data_content(uid)
-        fieldnames = ["Name", "BBox", "Class"]
+        fieldnames = ["Name", "Bbox", "Class"]
         csv_file = io.StringIO()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         writer.writeheader()
 
         for row in data:
-            writer.writerow({"Name": row.Name, "BBox": self.prepare_values(row.BBox), "Class": row.Class})
+            writer.writerow({"Name": row.Name, "Bbox": self.prepare_values(row.BBox), "Class": row.Class})
 
         csv_file.seek(0)  # Reset the StringIO cursor to the beginning
         return Response(csv_file.getvalue(), mimetype='text/csv')
