@@ -9,17 +9,20 @@ interface ReportData {
     create_date: string;
 }
 
-export async function getAllCat(handler: (data: ReportData[]) => void) {
+const instance = axios.create({
+    baseURL: 'http://localhost:8080/api/v1/',
+    timeout: 10000
+});
+
+
+export async function getAll(handler: (data: ReportData[]) => void) {
     try {
-        const response = await axios.get("http://localhost:8080/api/v1/report/all", {
-            headers: {
-                "User-Agent": "insomnia/10.1.1",
-            },
-        });
+        const response = await instance.get('report/all');
         handler(response.data);
         console.log(response.data);
     } catch (error) {
         console.error("Ошибка при загрузке данных:", error);
+        throw error; // Это позволит catch в useEffect правильно сработать
     }
 }
 
@@ -28,7 +31,7 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        getAllCat(setData).catch(() => setError("Ошибка при загрузке данных"));
+        getAll(setData).catch((error) => setError("Ошибка при загрузке данных"));
     }, []);
 
     return (

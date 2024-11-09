@@ -27,9 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app",     // добавьте папку app, если она используется
-    "src",     // добавьте папку src, если она используется
-    "components" // добавьте папку components, если она используется
+    "app",
+    "src",
+    "components"
   ],
   "exclude": ["node_modules"]
 }
