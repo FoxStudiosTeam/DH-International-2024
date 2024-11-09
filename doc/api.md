@@ -6,7 +6,7 @@
 
 #### GetAll - получение всего
 
-```
+```http request
 GET http://localhost:8080/api/v1/report/all
 ```
 
@@ -20,7 +20,7 @@ curl --request GET \
 
 #### Get Report - получить отчет (1)
 
-```
+```http request
 GET http://localhost:8080/api/v1/report/get/<uid>
 ```
 
@@ -34,7 +34,7 @@ curl --request GET \
 
 #### Create Report - создание отчета
 
-```
+```http request
 POST http://localhost:8080/api/v1/report/create
 ```
 
@@ -51,7 +51,7 @@ curl --request POST \
 PUT http://localhost:8080/api/v1/report/update/<uid>
 ```
 
-```
+```json
 {
     "title": "123"
 }
@@ -71,7 +71,7 @@ curl --request PUT \
 
 
 #### Delete Report - удаление отчета
-```
+```http request
 DELETE http://localhost:8080/api/v1/report/delete/<uid>
 ```
 где uid код отчёта
