@@ -48,7 +48,7 @@ def processing() -> tuple[list[dict]]:
     colors = {" good": [0,255,0], "bad": [0,0,255]}
 
     #path to zip file
-    zip_path = "./neural-service-py/images.zip"
+    zip_path = "./neural-service-py/images1.zip"
     
     #path to model
     model_path = "./neural-service-py/best(4).pt"
