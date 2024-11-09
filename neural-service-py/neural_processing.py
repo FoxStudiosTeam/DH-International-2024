@@ -47,7 +47,7 @@ def processing() -> tuple[list[dict]]:
 
     #path to zip file
     zip_path = "./neural-service-py/images1.zip"
-    
+
     #path to model
     model_path = "./neural-service-py/best(3).pt"
     

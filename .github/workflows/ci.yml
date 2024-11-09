@@ -34,15 +34,16 @@ jobs:
             echo "exists=true" >> $GITHUB_ENV
           else
             echo "No existing pull request."
+            echo ${{env.can_create_pr}}
             echo "exists=false" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
-        if: env.exists == 'false' && github.ref != 'refs/heads/main' && env.can_create_pr == 'true' # Only run this step if no existing PR
+        if: ${{ env.exists == 'false' && github.ref != 'refs/heads/main' && env.can_create_pr == 'true' }}  # Only run this step if no existing PR and there are new commit        run: |
         run: |
-          gh pr create \
+            gh pr create \
             --base main \
             --head ${{github.ref }} \
             --title "Merge ${{github.ref }} into main" \
