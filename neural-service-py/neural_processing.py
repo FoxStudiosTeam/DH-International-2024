@@ -80,7 +80,7 @@ def processing() -> tuple[list[dict]]:
                         batch += 1
                         images.append(image)
                         img_names.append(file_name)
-                        if batch < 100 and file_name!=zip_file.namelist()[-1]:
+                        if batch < 10 and file_name!=zip_file.namelist()[-1]:
                             continue
                         batch = 0
                         last_time = time.time()
