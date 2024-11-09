@@ -98,7 +98,7 @@ def processing() -> list[dict]:
                                 flag = True
 
                                 #add result dict to report list
-                                report.append({"name":f"{img_name.split('/')[-1]}", "BBox":box[1],"Class":box[0]})
+                                report.append({"name":f"{img_name.split('/')[-1]}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
 
                             #show img and pring file name
                             if flag:
