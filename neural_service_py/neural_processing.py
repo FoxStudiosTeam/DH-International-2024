@@ -83,9 +83,11 @@ class Process():
                                             box[0]="bad"
 
                                         #box drawing
+                                        if box[0] == 'bad': box_name = '0'
+                                        else: box_name = '1'
                                         cv2.rectangle(img,[x1,y1],[x2,y2],colors[box[0]],4)
-                                        cv2.putText(img,f"{"0" if box[0] == "bad" else "1"} - {round(box[2],4)}",(x1+10,y1+30),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),9)
-                                        cv2.putText(img,f"{"0" if box[0] == "bad" else "1"} - {round(box[2],4)}",(x1+10,y1+30),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),4)
+                                        cv2.putText(img,f"{box_name} - {round(box[2],4)}",(x1+10,y1+30),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),9)
+                                        cv2.putText(img,f"{box_name} - {round(box[2],4)}",(x1+10,y1+30),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),4)
 
                                         #flag if boxes exist
                                         flag = True
