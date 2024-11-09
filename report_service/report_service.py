@@ -2,9 +2,9 @@ import sqlite3
 import uuid
 from datetime import datetime
 
-from db_utils import *
-from api_utils import *
-from models import Report, Message, ReportRequest
+from .db_utils import *
+from .api_utils import *
+from domain.models import Report, Message, ReportRequest
 
 
 class ReportService:

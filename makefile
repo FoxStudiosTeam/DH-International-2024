@@ -5,4 +5,4 @@ build-report-block:
 setup-project: build-report-block
 	cd ./report_block && python3 -m pip install ./dist/report_block-0.0.1-py3-none-any.whl
 build-release:
-	python ./report-service/http_service.py
+	pwd && python -m report_service.http_service

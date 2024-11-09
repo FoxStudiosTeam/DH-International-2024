@@ -1,6 +1,7 @@
 from flask import Flask, Response, request
 import sqlite3
-from report_service import ReportService
+
+from .report_service import ReportService
 
 api = Flask(__name__)
 reportService = ReportService()
@@ -24,6 +25,7 @@ def update_report(uid : str):
 @api.route('/api/v1/report/delete/<uid>', methods=["DELETE"])
 def delete_report(uid : str):
     return Response(reportService.delete_report(uid), content_type='application/json')
+
 
 if __name__ == '__main__':
     api.run(debug=True, host='0.0.0.0', port=8080)
