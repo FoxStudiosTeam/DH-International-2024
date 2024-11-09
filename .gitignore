@@ -1,2 +1,6 @@
 .idea
 .vscode
+domain/__pycache__
+neural_service_py/__pycache__
+report_service/__pycache__
+weednw/NNservice/__pycache__
