@@ -1,9 +1,11 @@
 from flask import Flask, Response, request
 import sqlite3
-
+from flask_cors import CORS
 from .report_service import ReportService
+from .neural_service_impl import NeuralServiceImpl
 
 api = Flask(__name__)
+CORS(api)
 reportService = ReportService()
 
 @api.route('/api/v1/report/all', methods=["GET"])
@@ -25,6 +27,8 @@ def update_report(uid : str):
 @api.route('/api/v1/report/delete/<uid>', methods=["DELETE"])
 def delete_report(uid : str):
     return Response(reportService.delete_report(uid), content_type='application/json')
+
+neuralSubscriber = NeuralServiceImpl()
 
 
 if __name__ == '__main__':
