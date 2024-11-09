@@ -47,7 +47,7 @@ class ReportService:
         title = f"Отчёт от {date.date()}"
 
         try:
-            cur.execute("INSERT INTO reports (uid, title, create_date) VALUES (?,?,?)", (uid, str(date), title))
+            cur.execute("INSERT INTO reports (uid, title, create_date) VALUES (?,?,?)", (uid, title,str(date)))
             cur.fetchone()
             cur.close()
             self.conn.commit()
