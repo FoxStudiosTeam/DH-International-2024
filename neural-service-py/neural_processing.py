@@ -17,7 +17,7 @@ def output_to_csv() -> str:
         print(json.dumps(row,ensure_ascii=False))
     print(f"Занятое время: {(time.time()-start_time)} сек")
 
-    #json string with {"name":"file name", "BBox": [Number x, y, w, h], "Class": "class name of bbox (0 or 1)"}
+    #json string with {"Name":"file name", "BBox": [Number x, y, w, h], "Class": "class name of bbox (0 or 1)"}
     result_string = json.dumps(report, ensure_ascii=False)
     return result_string
 
@@ -26,7 +26,7 @@ def output_to_csv() -> str:
 def output_to_report() -> str:
     report: list[dict] = processing()[1]
 
-    #json string with {"name":"file name", "BBox": [Number x, y, w, h], "Class": "class name of bbox (0 or 1)"}
+    #json string with {"path":"file path", "class_name": "class name of bbox (0 or 1)", "confidence": "Number float (from 0 to 1)"}
     result_string = json.dumps(report, ensure_ascii=False)
     return result_string
 
@@ -48,10 +48,10 @@ def processing() -> tuple[list[dict]]:
     colors = {" good": [0,255,0], "bad": [0,0,255]}
 
     #path to zip file
-    zip_path = "./neural-service-py/images1.zip"
+    zip_path = "./neural-service-py/images.zip"
     
     #path to model
-    model_path = "./neural-service-py/best(3).pt"
+    model_path = "./neural-service-py/best(4).pt"
     
     model : YOLO = YOLO(model_path)
     report_csv: list[dict] = []
@@ -114,16 +114,16 @@ def processing() -> tuple[list[dict]]:
                                     flag = True
 
                                     #add result dict to report list
-                                    report_csv.append({"name":f"{"/".join(img_name.split('/')[-3:])}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
-                                    report.append({"name":f"{"/".join(img_name.split('/')[-3:])}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
+                                    report_csv.append({"Name":f"{"/".join(img_name.split('/')[-1:])}", "BBox":box[1],"Class":"0" if box[0] == "bad" else "1" })
+                                    report.append({"path":f"{"/".join(img_name.split('/')[-3:])}","class_name":"0" if box[0] == "bad" else "1","confidence":f"{round(box[2],2)}"})
 
                             #show img and pring file name
                             if flag:
                                 print("/".join(img_name.split('/')[-3:]))
                                 img = cv2.resize(img,(620,480))
                                 cv2.imshow("pivo", img)
-                                cv2.waitKey(0)
-                                # time.sleep(2)
+                                cv2.waitKey(1)
+                                time.sleep(2)
                                 cv2.destroyAllWindows
                                 flag = False
 
