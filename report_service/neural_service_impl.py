@@ -70,6 +70,10 @@ class NeuralServiceImpl:
         response.status_code = status_code
         return response
 
+    def prepare_values(self, str_in):
+        local_result = str_in.split(" ")
+        return f"{local_result[0]},{local_result[1]},{local_result[2]},{local_result[3]}"
+
     def get_neural_report_data_csv(self, uid) -> Response:
         data: list[ReportUnit] = self.get_neural_report_data_content(uid)
         fieldnames = ["Name", "BBox", "Class"]
@@ -79,7 +83,7 @@ class NeuralServiceImpl:
         writer.writeheader()
 
         for row in data:
-            writer.writerow({"Name": row.Name, "BBox": "'"+row.BBox+"'", "Class": row.Class})
+            writer.writerow({"Name": row.Name, "BBox": self.prepare_values(row.BBox), "Class": row.Class})
 
         csv_file.seek(0)  # Reset the StringIO cursor to the beginning
         return Response(csv_file.getvalue(), mimetype='text/csv')
