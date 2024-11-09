@@ -1,0 +1,52 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CI
+
+on:
+  push:
+    branches: [ "*", "*/*" ]
+  pull_request:
+    branches: [ "*", "*/*"  ]
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Create Label if it doesn't exist
+        run: |
+          if ! gh label list | grep -q 'automated-pr'; then
+            gh label create 'automated-pr' --color 'f29559'
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for existing pull request
+        run: |
+          if gh pr list --base main --head foxstudiosteam/DH-International-2024 --json state -q '.[].state' | grep -q 'OPEN'; then
+            echo "Pull request already exists."
+            echo "exists=true" >> $GITHUB_ENV
+          else
+            echo "No existing pull request."
+            echo ${{env.can_create_pr}}
+            echo "exists=false" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        if: ${{ env.exists == 'false' && github.ref != 'refs/heads/main' && env.can_create_pr == 'true' }}  # Only run this step if no existing PR and there are new commit        run: |
+        run: |
+            gh pr create \
+            --base main \
+            --head ${{github.ref }} \
+            --title "Merge ${{github.ref }} into main" \
+            --body "Automated pull request created by GitHub Actions."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
