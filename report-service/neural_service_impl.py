@@ -8,9 +8,9 @@ class NeuralServiceImpl:
 
 
     def upload_report(self, uid:str, data):
-        cur = self.conn.cursor()
+        cur = init_cursor(self.conn)
         try:
             print("")
         except sqlite3.OperationalError:
             migrate(cur)
-            return self.upload(uid,data)
+            return self.upload_report(uid,data)
