@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, request
 import sqlite3
 from flask_cors import CORS
 from .report_service import ReportService
@@ -10,29 +10,41 @@ reportService = ReportService()
 
 @api.route('/api/v1/report/all', methods=["GET"])
 def get_reports():
-    return Response(reportService.get_reports(), content_type='application/json')
+    return reportService.get_reports()
 
 @api.route('/api/v1/report/get/<uid>', methods=["GET"])
 def get_report(uid : str):
-    return Response(reportService.get_report(uid), content_type='application/json')
+    return reportService.get_report(uid)
 
 @api.route('/api/v1/report/create', methods=["POST"])
 def create_report():
-    return Response(reportService.create_report(), content_type='application/json')
+    return reportService.create_report()
 
 @api.route('/api/v1/report/update/<uid>', methods=["PUT"])
 def update_report(uid : str):
-    return Response(reportService.update_report(uid, request.data), content_type='application/json')
+    return reportService.update_report(uid, request.data)
 
 @api.route('/api/v1/report/delete/<uid>', methods=["DELETE"])
 def delete_report(uid : str):
-    return Response(reportService.delete_report(uid), content_type='application/json')
+    return reportService.delete_report(uid)
 
 neuralSubscriber = NeuralServiceImpl()
 
 @api.route('/api/v1/neural/upload_report/<uid>', methods=["POST"])
 def upload_report(uid : str):
-    return Response(neuralSubscriber.upload_report(uid, request.files), content_type='application/json')
+    return neuralSubscriber.upload_report(uid, request.files)
+
+@api.route('/api/v1/neural/reports/all/<uid>', methods=["GET"])
+def get_neural_report_data(uid : str):
+    return neuralSubscriber.get_neural_report_data(uid)
+
+@api.route('/api/v1/neural/reports/remove/<uid>', methods=["DELETE"])
+def remove_neural_report_data(uid : str):
+    return neuralSubscriber.remove_neural_report_data(uid)
+
+# @api.route('/api/v1/neural/reports/csv/<uid>', methods=["GET"])
+# def get_neural_report_data_csv (uid : str):
+#     return neuralSubscriber.get_neural_report_data_csv(uid)
 
 if __name__ == '__main__':
     api.run(debug=False, host='0.0.0.0', port=8080)

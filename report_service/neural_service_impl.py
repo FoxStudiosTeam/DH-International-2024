@@ -1,16 +1,91 @@
 import sqlite3
 
-from domain import Message
+from flask import Response
+
+from domain import Message, ReportUnit
+from domain.models import ReportRow
 from .api_utils import wrap_answer
 from neural_service_py import neural_processing
+from .db_utils import *
+
 
 class NeuralServiceImpl:
     def __init__(self):
         self.conn = sqlite3.connect('reports.db', check_same_thread=False)
         self.process = neural_processing.Process()
-    def upload_report(self, uid, form_data) -> bytes:
-        if form_data['file'] is not None:
-            result = self.process.processing(uid, form_data['file'].read())
-            return wrap_answer(result)
+
+    def upload_report(self, uid, form_data) -> Response:
+        files = form_data.getlist("file")
+        response = None
+        for file in files:
+            if file.filename.endswith('.zip'):
+                result = self.process.processing(uid, file.read())
+                response = self.write_report(result, uid)
+            elif file.filename.endswith('.png') or file.filename.endswith('.jpg') or file.filename.endswith(
+                    '.jpeg'):
+                result = self.process.processing(uid, file.read())
+                response = self.write_report(result, uid)
+
+        if response is None:
+            return self.send_response("File or files have incorrect extension.", 500)
         else:
-            return wrap_answer(Message("NoFileFound"))
+            return response
+
+    def write_report(self, report_data: list[ReportUnit], uid: str) -> Response:
+        cur = init_cursor(self.conn)
+        try:
+            for report_row in report_data:
+                cur.execute(
+                    "INSERT INTO report_data (uid, data_upload, file_path, class_num, confidence, report_uid) VALUES (?,?,?,?,?,?)",
+                    (report_row.uid, report_row.data_upload, report_row.file_path, report_row.class_num,
+                     report_row.confidence, uid))
+                cur.fetchone()
+
+            cur.close()
+            self.conn.commit()
+            return self.send_response("ok")
+
+        except sqlite3.OperationalError:
+            migrate(cur)
+            return self.write_report(report_data, uid)
+
+    def send_response(self, message, status_code=200) -> Response:
+        response = Message(message)
+        response = wrap_answer(response)
+        response.status_code = status_code
+        return response
+
+    # def get_neural_report_data_csv(self, uid) -> bytes:
+    #     data : list[ReportRow] = self.get_neural_report_data_content(uid)
+    #     return bytes(data)
+
+
+    def get_neural_report_data(self, uid) -> Response:
+        return wrap_answer(self.get_neural_report_data_content(uid))
+
+    def get_neural_report_data_content(self, uid) -> list[ReportRow]:
+        cur = init_cursor(self.conn)
+        try:
+            cur.execute("SELECT * FROM report_data WHERE report_uid=?", (uid,))
+            rows = cur.fetchall()
+            result: list[ReportRow] = []
+            for row in rows:
+                result.append(ReportRow(row[0], row[1], [2], row[3], row[4], row[5]))
+            cur.close()
+            return result
+        except sqlite3.OperationalError:
+            migrate(cur)
+            return self.get_neural_report_data_content(uid)
+
+    def remove_neural_report_data(self, uid) -> Response:
+        cur = init_cursor(self.conn)
+        try:
+            cur.execute("DELETE FROM report_data WHERE uid=?", (uid,))
+            cur.fetchone()
+            cur.close()
+            self.conn.commit()
+            return self.send_response(f"ok - {uid}")
+        except sqlite3.OperationalError:
+            migrate(cur)
+            return self.remove_neural_report_data(uid)
+

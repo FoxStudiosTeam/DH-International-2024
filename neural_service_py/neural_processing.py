@@ -31,7 +31,7 @@ class Process:
         zip_path = io.BytesIO(zip_file)
 
         # path to model
-        model_path = "./neural_service_py/11x.pt"
+        model_path = "./neural_service_py/best_23_54.pt"
 
         model: YOLO = YOLO(model_path)
         report: list[ReportUnit] = []
