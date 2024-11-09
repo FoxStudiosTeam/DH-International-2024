@@ -11,11 +11,9 @@ class ReportService:
     def __init__(self):
         self.conn = sqlite3.connect('reports.db', check_same_thread=False)
 
-    def init_cursor(self) -> sqlite3.Cursor:
-        return self.conn.cursor()
 
     def get_reports(self) -> bytes:
-        cur = self.init_cursor()
+        cur = init_cursor(self.conn)
         try:
             query = cur.execute("SELECT * FROM reports")
             prepared_data = query.fetchall()
@@ -30,7 +28,7 @@ class ReportService:
             return self.get_reports()
 
     def get_report(self, uid) -> bytes:
-        cur = self.init_cursor()
+        cur = init_cursor(self.conn)
         try:
             cur.execute("SELECT * FROM reports WHERE uid=? LIMIT 1", (uid,))
             row = cur.fetchone()
@@ -43,7 +41,7 @@ class ReportService:
             return wrap_answer(Message("NotFound"))
 
     def create_report(self) -> bytes:
-        cur = self.init_cursor()
+        cur = init_cursor(self.conn)
         uid = str(uuid.uuid4())
         date = datetime.now()
         title = f"Отчёт от {date.date()}"
@@ -60,7 +58,7 @@ class ReportService:
             return self.create_report()
 
     def delete_report(self, uid) -> bytes:
-        cur = self.init_cursor()
+        cur = init_cursor(self.conn)
         try:
             cur.execute("DELETE FROM report_data where report_uid = ?", (uid,))
             cur.execute("DELETE FROM reports where uid = ?", (uid,))
@@ -74,7 +72,7 @@ class ReportService:
             return self.delete_report(uid)
 
     def update_report(self, uid, raw_data) -> bytes:
-        cur = self.init_cursor()
+        cur = init_cursor(self.conn)
         data = json.loads(raw_data)
         report = ReportRequest(title=data.get('title'))
         try:
