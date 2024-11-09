@@ -1,27 +1,18 @@
-import uuid
 from zipfile import ZipFile
 from ultralytics import YOLO
 from ultralytics.engine.results import Results
-from datetime import datetime
-import json
+from domain.models import ReportUnit
 import cv2
 import numpy as np
 import time
-from domain.models import ReportUnit
 
 class Process():
     start_time = time.time()
 
     #output to csv
-    def output_to_csv(self) -> str:
-        report: list[ReportUnit] = self.processing("0")
+    def output(self, report_uid:str) -> list[object]:
+        report: list[ReportUnit] = self.processing(report_uid)
         return report
-
-    #output to report
-    def output_to_report(self) -> str:
-        report: list[ReportUnit] = self.processing("1")
-        return report
-
 
     #private func to bboxes
     def parse_result(self, data: Results) -> list[list]:
@@ -34,7 +25,7 @@ class Process():
             return boxes
 
     #processing zip file, returns list of dicts
-    def processing(self, report_uid:str) -> tuple[list[dict]]:
+    def processing(self, report_uid:str) -> list[object]:
 
         #colors to bboxes
         colors = {" good": [0,255,0], "bad": [0,0,255]}
@@ -46,8 +37,7 @@ class Process():
         model_path = "./neural-service-py/best(4).pt"
         
         model : YOLO = YOLO(model_path)
-        report_csv: list[object] = []
-        report: list[object] = []
+        report: list[ReportUnit] = []
         count: int = 0
         batch: int = 0
         images: list = []
@@ -102,7 +92,7 @@ class Process():
                                         flag = True
 
                                         #add result dict to report list
-                                        report.append({"path":f"{img_name}","class_name":"0" if box[0] == "bad" else "1","confidence":f"{round(box[2],2)}"})
+                                        report.append(ReportUnit(file_name,box,report_uid))
 
                                 #show img and pring file name
                                 if flag:
@@ -111,7 +101,7 @@ class Process():
                                     cv2.imshow("pivo", img)
                                     cv2.waitKey(1)
                                     time.sleep(2)
-                                    cv2.destroyAllWindows
+                                    cv2.destroyAllWindows()
                                     flag = False
 
                             #print to test and cleaning lists of images
@@ -122,4 +112,4 @@ class Process():
                         else:
                             print(f"Нет изображения в {file_name}")
 
-
+Process().output("0")
