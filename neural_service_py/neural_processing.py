@@ -98,7 +98,7 @@ class Process:
                                         flag = True
 
                                         # add result dict to report list
-                                        report.append(ReportUnit(file_name, box, report_uid))
+                                        report.append(ReportUnit(img_name, box, report_uid))
 
                                 # show img and pring file name
                                 if flag:
