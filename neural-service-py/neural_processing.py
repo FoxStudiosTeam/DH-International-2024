@@ -10,10 +10,10 @@ start_time = time.time()
 
 # output to json
 def output(report: list[dict]):
-    json.dumps(report)
     for row in report:
         print(json.dumps(row))
     print(f"Занятое время: {(time.time()-start_time)} сек")
+    return json.dumps(report)
 
 #func to bboxes
 def parse_result(data: list[Results], img:cv2.typing.MatLike):
