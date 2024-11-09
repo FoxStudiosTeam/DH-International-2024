@@ -232,7 +232,6 @@ class Process:
 
         # open file
         with open(img_path) as file:
-            batch += 1
             file_bytes = np.asanyarray(bytearray(file.read()), dtype=np.uint8)
             image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             if image is not None:

@@ -1,4 +1,5 @@
 import sqlite3
+from io import StringIO
 
 from flask import Response
 
@@ -37,6 +38,14 @@ class NeuralServiceImpl:
         else:
             return response
 
+    def list_to_str(self, in_list : list[object]) -> str:
+        buff = ""
+        for elem in in_list:
+            buff += str(elem) + " "
+        return buff
+
+
+
     def write_report(self, report_data: list[ReportUnit], uid: str) -> Response:
         cur = init_cursor(self.conn)
         try:
@@ -44,7 +53,7 @@ class NeuralServiceImpl:
                 cur.execute(
                     "INSERT INTO report_data (uid, data_upload, file_path, class_num, confidence, report_uid, file_name, bbox) VALUES (?,?,?,?,?,?,?,?)",
                     (report_row.uid, report_row.data_upload, report_row.file_path, report_row.class_num,
-                     report_row.confidence, uid, report_row.Name, str.join(report_row.BBox," ")))
+                     report_row.confidence, uid, report_row.Name, self.list_to_str(report_row.BBox)))
                 cur.fetchone()
 
             cur.close()
@@ -61,9 +70,8 @@ class NeuralServiceImpl:
         response.status_code = status_code
         return response
 
-    def get_neural_report_data_csv(self, uid) -> bytes:
-        data : list[ReportUnit] = self.get_neural_report_data_content(uid)
-        # with open('report.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    def get_neural_report_data_csv(self, uid) -> Response:
+        data: list[ReportUnit] = self.get_neural_report_data_content(uid)
         fieldnames = ["Name", "BBox", "Class"]
         csv_file = io.StringIO()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -71,10 +79,10 @@ class NeuralServiceImpl:
         writer.writeheader()
 
         for row in data:
-            writer.writerow({"Name": row.Name, "BBox": row.BBox, "Class": row.Class})
-        
-        return bytes(csv_file)
+            writer.writerow({"Name": row.Name, "BBox": "'"+row.BBox+"'", "Class": row.Class})
 
+        csv_file.seek(0)  # Reset the StringIO cursor to the beginning
+        return Response(csv_file.getvalue(), mimetype='text/csv')
 
     def get_neural_report_data(self, uid) -> Response:
         return wrap_answer(self.get_neural_report_data_content(uid))
@@ -85,10 +93,14 @@ class NeuralServiceImpl:
             cur.execute("SELECT * FROM report_data WHERE report_uid=?", (uid,))
             rows = cur.fetchall()
             result: list[ReportUnit] = []
-            if row[3] == "0": name = "bad"
-            elif row[3] == "1": name = "good"
+            name = "bad"
             for row in rows:
-                result.append(ReportUnit(row[2], [name,[float(row[7].split(" "))], float(row[4]),], row[5]))
+                if row[3] == 0:
+                    name = "bad"
+                elif row[3] == 1:
+                    name = "good"
+                bbox_row = row[7]
+                result.append(ReportUnit(row[2], [name,bbox_row,float(row[4]),], row[5]))
             cur.close()
             return result
         except sqlite3.OperationalError:
