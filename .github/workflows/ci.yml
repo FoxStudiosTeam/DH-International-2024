@@ -44,7 +44,7 @@ jobs:
         run: |
           gh pr create \
             --base main \
-            --head main \
+            --head ${{github.ref }} \
             --title "Merge ${{github.ref }} into main" \
             --body "Automated pull request created by GitHub Actions."
         env:
