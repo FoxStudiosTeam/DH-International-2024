@@ -32,7 +32,7 @@ class Process:
         zip_path = io.BytesIO(zip_file)
 
         # path to model
-        model_path = "./neural_service_py/best_23_54.pt"
+        model_path = "./neural_service_py/14best.pt"
 
         model: YOLO = YOLO(model_path)
         report: list[ReportUnit] = []
@@ -70,7 +70,7 @@ class Process:
                                 for box in boxes:
 
                                     # check to confidence
-                                    if box[2] > 0.5:
+                                    if box[2] >= 0.6:
                                         img_width = img.shape[1]
                                         img_heght = img.shape[0]
                                         x1, x2 = int((box[1][0] - box[1][2] / 2) * img_width), int(

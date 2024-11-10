@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/http_service.py"
+   "value": "D:/projects/DH-International-2024/http_service.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/web-view/src/assets/logo.ico"
+   "value": "C:/Users/artga/Downloads/logo.ico"
   },
   {
    "optionDest": "clean_build",
@@ -55,19 +55,19 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/web-view;web-view/"
+   "value": "D:/projects/DH-International-2024/neural_service_py;neural_service_py/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/neural_service_py;neural_service_py/"
+   "value": "D:/projects/DH-International-2024/node;node/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/report_service;report_service/"
+   "value": "D:/projects/DH-International-2024/report_service;report_service/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/sayki/IdeaProjects/DH-International-2024/node;node/"
+   "value": "D:/projects/DH-International-2024/web-view;web-view/"
   }
  ],
  "nonPyinstallerOptions": {

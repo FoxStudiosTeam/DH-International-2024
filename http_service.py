@@ -59,11 +59,14 @@ def run_node():
     try:
         # subprocess.run([f"{cwd}/node/npm.cmd", "install", "--prefix", "./web-view"], env=env, check=True)
         # subprocess.run([f"{cwd}/node/npm.cmd", "run", "build", "--prefix", "./web-view"], env=local_env, check=True)
-        subprocess.run([f"{cwd}/node/npm.cmd", "run", "start", "--prefix", "./web-view"], env=env, check=True)
+        
+        # subprocess.run([f"{cwd}/node/npm.cmd", "install", "--prefix", "./web-view"], env=env, check=True)
+        # subprocess.run([f"{cwd}/node/npm.cmd", "install", "next", "--prefix", "./web-view"], env=env, check=True)
+        subprocess.run([f"{cwd}/_internal/node/npm.cmd", "run", "start", "--prefix", "./_internal/web-view"], env=env, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while starting Next.js: {e}")
     except FileNotFoundError as e:
-        print(f"File not found: {e}")
+        print(f"File not found: {e}; {cwd}")
 
 def run_flask():
     api.run(debug=False, host='0.0.0.0', port=8080)
