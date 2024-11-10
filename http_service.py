@@ -1,8 +1,8 @@
 from flask import Flask, request
 import sqlite3
 from flask_cors import CORS
-from .report_service import ReportService
-from .neural_service_impl import NeuralServiceImpl
+from report_service.report_service import ReportService
+from report_service.neural_service_impl import NeuralServiceImpl
 
 api = Flask(__name__)
 CORS(api)
