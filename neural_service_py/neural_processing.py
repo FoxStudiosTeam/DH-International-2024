@@ -103,11 +103,11 @@ class Process:
                                 # show img and pring file name
                                 if flag:
                                     print("/".join(img_name.split('/')[-3:]))
-                                    img = cv2.resize(img, (620, 480))
-                                    cv2.imshow("pivo", img)
-                                    cv2.waitKey(1)
-                                    time.sleep(2)
-                                    cv2.destroyAllWindows()
+                                    # img = cv2.resize(img, (620, 480))
+                                    # cv2.imshow("pivo", img)
+                                    # cv2.waitKey(1)
+                                    # time.sleep(2)
+                                    # cv2.destroyAllWindows()
                                     flag = False
 
                             # print to test and cleaning lists of images
@@ -195,16 +195,16 @@ class Process:
                                         flag = True
 
                                         # add result dict to report list
-                                        report.append(ReportUnit(file_name, box, report_uid))
+                                        report.append(ReportUnit(img_name, box, report_uid))
 
                                 # show img and pring file name
                                 if flag:
                                     print("/".join(img_name.split('/')[-3:]))
-                                    img = cv2.resize(img, (620, 480))
-                                    cv2.imshow("pivo", img)
-                                    cv2.waitKey(1)
-                                    time.sleep(2)
-                                    cv2.destroyAllWindows()
+                                    # img = cv2.resize(img, (620, 480))
+                                    # cv2.imshow("pivo", img)
+                                    # cv2.waitKey(1)
+                                    # time.sleep(2)
+                                    # cv2.destroyAllWindows()
                                     flag = False
 
                             # print to test and cleaning lists of images
@@ -230,11 +230,11 @@ class Process:
         # open file
 
         file_bytes = np.fromstring(file,np.uint8)
-        image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-        if image is not None:
+        img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+        if img is not None:
 
             # images processing
-            result = model.predict(image)[0]
+            result = model.predict(img)[0]
             boxes = self.parse_result(result)
             flag: bool = False
             for box in boxes:
@@ -272,11 +272,11 @@ class Process:
                 # show img and pring file name
                 if flag:
                     print(img_name)
-                    img = cv2.resize(img, (620, 480))
-                    cv2.imshow("pivo", img)
-                    cv2.waitKey(1)
-                    time.sleep(2)
-                    cv2.destroyAllWindows()
+                    # img = cv2.resize(img, (620, 480))
+                    # cv2.imshow("pivo", img)
+                    # cv2.waitKey(1)
+                    # time.sleep(2)
+                    # cv2.destroyAllWindows()
                     flag = False
         else:
             print(f"Нет изображения в {img_name}")
