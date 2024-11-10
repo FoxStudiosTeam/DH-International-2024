@@ -97,10 +97,10 @@ class Process:
                                         # flag = True
 
                                         new_str = img_name
-                                        try:
-                                            new_str = img_name.encode('cp437').decode('cp866')
-                                        except UnicodeDecodeError:
-                                            new_str = img_name
+                                        # try:
+                                        #     new_str = img_name.encode('cp437').decode('cp866')
+                                        # except UnicodeDecodeError:
+                                        #     new_str = img_name
                                         # add result dict to report list
                                         report.append(ReportUnit(new_str, box, report_uid))
                                         new_str = ""
@@ -199,10 +199,10 @@ class Process:
                                         # flag = True
 
                                         new_str = img_name
-                                        try:
-                                            new_str = img_name.encode('cp437').decode('cp866')
-                                        except UnicodeDecodeError:
-                                            new_str = img_name
+                                        # try:
+                                        #     new_str = img_name.encode('cp437').decode('cp866')
+                                        # except UnicodeDecodeError:
+                                        #     new_str = img_name
                                         # add result dict to report list
                                         report.append(ReportUnit(new_str, box, report_uid))
                                         new_str = ""
@@ -277,10 +277,10 @@ class Process:
                     # flag = True
 
                     new_str = img_name
-                    try:
-                        new_str = img_name.encode('cp437').decode('cp866')
-                    except UnicodeDecodeError:
-                        new_str = img_name
+                    # try:
+                    #     new_str = img_name.encode('cp437').decode('cp866')
+                    # except UnicodeDecodeError:
+                    #     new_str = img_name
                     # add result dict to report list
                     report.append(ReportUnit(new_str, box, report_uid))
                     new_str = ""

@@ -62,7 +62,7 @@ def run_node():
         
         # subprocess.run([f"{cwd}/node/npm.cmd", "install", "--prefix", "./web-view"], env=env, check=True)
         # subprocess.run([f"{cwd}/node/npm.cmd", "install", "next", "--prefix", "./web-view"], env=env, check=True)
-        subprocess.run([f"{cwd}/_internal/node/npm.cmd", "run", "start", "--prefix", "./_internal/web-view"], env=env, check=True)
+        subprocess.run([f"{cwd}/node/npm.cmd", "run", "start", "--prefix", "./web-view"], env=env, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while starting Next.js: {e}")
     except FileNotFoundError as e:
