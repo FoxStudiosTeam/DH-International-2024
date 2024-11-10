@@ -146,34 +146,34 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-gradient-to-b from-[#485563] to-[#29323c] h-[100vh]">
+        <div className="bg-gradient-to-b from-[#485563] to-[#29323c] h-[100vh] w-full">
             <Header/>
-            <div className="container mx-auto p-4 text-white">
+            <div className="container mx-auto p-4 text-white flex flex-col justify-center">
                 {error && <p className="text-red-500">{error}</p>}
 
-                <div className="mb-4">
+                <div className="mb-4 flex flex-row h-[50px]">
                     <button onClick={handleCreateReport} className="text-white">
                         <Image src={add} width={50} height={50} alt="add" />
                     </button>
+                    {editingReport && (
+                        <div className="mb-4 mt-[5px]">
+                            <input
+                                type="text"
+                                value={updatedTitle}
+                                onChange={(e) => setUpdatedTitle(e.target.value)}
+                                className="p-2 text-black"
+                                placeholder="Редактировать название отчета"
+                            />
+                            <button onClick={handleUpdateReport} className="ml-2 px-4 py-2 bg-yellow-500 text-white">Обновить отчет</button>
+                        </div>
+                    )}
                 </div>
 
-                {editingReport && (
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={updatedTitle}
-                            onChange={(e) => setUpdatedTitle(e.target.value)}
-                            className="p-2 text-black"
-                            placeholder="Редактировать название отчета"
-                        />
-                        <button onClick={handleUpdateReport} className="ml-2 px-4 py-2 bg-yellow-500 text-white">Обновить отчет</button>
-                    </div>
-                )}
 
-                <div className="flex flex-row gap-5 flex-wrap">
+                <div className="flex flex-row gap-5 flex-wrap justify-evenly">
                     {paginatedData.map((item) => (
                         <div key={item.uid}
-                             className="w-[350px] bg-[#323D48] text-wrap h-[150px] p-5 border-[1px] rounded-xl relative overflow-y-auto overflow-x-hidden">
+                             className="w-[350px] bg-[#222E3A] text-wrap h-[150px] p-5 border-[1px] rounded relative overflow-y-auto overflow-x-hidden">
                             <Link href={`/pages/report/${item.uid}`} className="block">
                                 <p className="text-wrap"><strong>Название:</strong> {item.title}</p>
                                 <p><strong>Дата создания:</strong> {item.create_date}</p>
@@ -191,11 +191,11 @@ export default function Home() {
                 </div>
 
                 {/* Фиксированные кнопки пагинации внизу */}
-                <div className="fixed bottom-5 right-5 w-full flex justify-center p-4">
+                <div className="fixed bottom-5 left-1 w-full flex justify-center p-4">
                     <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="px-3 py-1 bg-gray-500 text-white disabled:bg-gray-400 mx-2"
+                        className="px-3 py-1 bg-[#222E3A]  text-white disabled:bg-gray-500 mx-2 rounded border-[1px]"
                     >
                         Назад
                     </button>
@@ -203,7 +203,7 @@ export default function Home() {
                     <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="px-3 py-1 bg-gray-500 text-white disabled:bg-gray-400 mx-2"
+                        className="px-3 py-1 bg-[#222E3A]  text-white disabled:bg-gray-500 mx-2 rounded border-[1px]"
                     >
                         Вперед
                     </button>
