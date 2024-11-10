@@ -75,7 +75,7 @@ class NeuralServiceImpl:
         return f"{local_result[0]},{local_result[1]},{local_result[2]},{local_result[3]}"
 
     def get_neural_report_data_csv(self, uid) -> Response:
-        data: list[ReportUnit] = self.get_neural_report_data_content(uid)
+        data: list[ReportUnit] = self.get_neural_report_data_content_csv(uid)
         fieldnames = ["Name", "Bbox", "Class"]
         csv_file = io.StringIO()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -91,7 +91,21 @@ class NeuralServiceImpl:
     def get_neural_report_data(self, uid) -> Response:
         return wrap_answer(self.get_neural_report_data_content(uid))
 
-    def get_neural_report_data_content(self, uid) -> list[ReportUnit]:
+    def get_neural_report_data_content(self, uid) -> list[ReportRow]:
+        cur = init_cursor(self.conn)
+        try:
+            cur.execute("SELECT * FROM report_data WHERE report_uid=?", (uid,))
+            rows = cur.fetchall()
+            result: list[ReportRow] = []
+            for row in rows:
+                result.append(ReportRow(row[0],row[1],row[2],row[3],row[4],row[5]))
+            cur.close()
+            return result
+        except sqlite3.OperationalError:
+            migrate(cur)
+            return self.get_neural_report_data_content(uid)
+
+    def get_neural_report_data_content_csv(self, uid) -> list[ReportUnit]:
         cur = init_cursor(self.conn)
         try:
             cur.execute("SELECT * FROM report_data WHERE report_uid=?", (uid,))
