@@ -1,16 +1,16 @@
 import tensorflow as tf
-from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
-from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras._tf_keras.keras.applications import ResNet50
+from keras._tf_keras.keras.layers import Dense, GlobalAveragePooling2D
+from keras._tf_keras.keras.models import Model
+from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
-from tensorflow.keras.preprocessing import image
+from keras._tf_keras.keras.preprocessing import image
 
 def prepare_validation_data():
     test_datagen = ImageDataGenerator(rescale=1. / 255)
 
     test_generator = test_datagen.flow_from_directory(
-        'data/validation',  # Путь к данным для валидации
+        'C:\\Users\weednw\\PycharmProjects\\DH-International-2024\\weednw\\NNservice\\data',  # Путь к данным для валидации
         target_size=(224, 224),
         batch_size=32,
         class_mode='categorical',
@@ -52,14 +52,14 @@ def prepare_data():
     test_datagen = ImageDataGenerator(rescale=1./255)
 
     train_generator = train_datagen.flow_from_directory(
-        'data/train',  #путь к обучающим
+        'C:\\Users\\weednw\\PycharmProjects\\DH-International-2024\\weednw\\NNservice\\data\\train',  #путь к обучающим
         target_size=(224, 224),
         batch_size=32,
         class_mode='categorical'
     )
 
     test_generator = test_datagen.flow_from_directory(
-        'data/test',  #путь к тестовым
+        'C:\\Users\\weednw\\PycharmProjects\\DH-International-2024\\weednw\\NNservice\\data\\validation',  #путь к тестовым
         target_size=(224, 224),
         batch_size=32,
         class_mode='categorical'
