@@ -43,11 +43,10 @@ class Process:
 
         # open zip
         with ZipFile(zip_path) as zip_file:
-
             # file traversal
             for file_name in zip_file.namelist():
-
                 # check to img
+
                 if file_name.endswith((".png", ".jpg", ".jpeg")):
 
                     # open img
@@ -97,9 +96,14 @@ class Process:
                                         # flag if boxes exist
                                         flag = True
 
+                                        new_str = img_name
+                                        try:
+                                            new_str = img_name.encode('cp437').decode('cp866')
+                                        except UnicodeDecodeError:
+                                            new_str = img_name
                                         # add result dict to report list
-                                        report.append(ReportUnit(img_name, box, report_uid))
-
+                                        report.append(ReportUnit(new_str, box, report_uid))
+                                        new_str = ""
                                 # show img and pring file name
                                 if flag:
                                     print("/".join(img_name.split('/')[-3:]))
@@ -194,8 +198,14 @@ class Process:
                                         # flag if boxes exist
                                         flag = True
 
+                                        new_str = img_name
+                                        try:
+                                            new_str = img_name.encode('cp437').decode('cp866')
+                                        except UnicodeDecodeError:
+                                            new_str = img_name
                                         # add result dict to report list
-                                        report.append(ReportUnit(img_name, box, report_uid))
+                                        report.append(ReportUnit(new_str, box, report_uid))
+                                        new_str = ""
 
                                 # show img and pring file name
                                 if flag:
@@ -266,8 +276,14 @@ class Process:
                     # flag if boxes exist
                     flag = True
 
+                    new_str = img_name
+                    try:
+                        new_str = img_name.encode('cp437').decode('cp866')
+                    except UnicodeDecodeError:
+                        new_str = img_name
                     # add result dict to report list
-                    report.append(ReportUnit(img_name, box, report_uid))
+                    report.append(ReportUnit(new_str, box, report_uid))
+                    new_str = ""
 
                 # show img and pring file name
                 if flag:
