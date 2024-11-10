@@ -8,6 +8,7 @@ import Link from "next/link";
 import add from "@/assets/Add.svg";
 import edit from "@/assets/Edit.svg";
 import del from "@/assets/Close.svg";
+import {any} from "prop-types";
 
 
 
@@ -21,6 +22,10 @@ const instance = axios.create({
     baseURL: 'http://localhost:8080/api/v1/',
     timeout: 10000
 });
+
+type SomeType = {
+    getAllReports?: (handler: (data: ReportData[]) => void) => Promise<void>;
+};
 
 // Получить все отчеты
 export async function getAllReports(handler: (data: ReportData[]) => void) {
