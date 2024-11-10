@@ -1,12 +1,13 @@
 "use client";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Image from 'next/image';
 import {Header} from "@/app/components/cap";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import add from "@/assets/Add.svg";
-import edit from "@/assets/Add.svg";
-import del from "@/assets/Add.svg";
+import edit from "@/assets/Edit.svg";
+import del from "@/assets/Close.svg";
 
 
 
@@ -151,7 +152,9 @@ export default function Home() {
                 {error && <p className="text-red-500">{error}</p>}
 
                 <div className="mb-4">
-                    <button onClick={handleCreateReport} className="px-4 py-2 bg-blue-500 text-white">Создать отчет</button>
+                    <button onClick={handleCreateReport} className="text-white">
+                        <Image src={add} width={50} height={50} alt="add" />
+                    </button>
                 </div>
 
                 {editingReport && (
@@ -176,8 +179,12 @@ export default function Home() {
                                 <p><strong>Дата создания:</strong> {item.create_date}</p>
                             </Link>
                             <div className="absolute top-2 right-2 flex space-x-2">
-                                <button onClick={() => handleEditReport(item)} className="text-yellow-500">=</button>
-                                <button onClick={() => handleDeleteReport(item.uid)} className="text-red-500">-</button>
+                                <button onClick={() => handleEditReport(item)} className="text-yellow-500">
+                                    <Image className="fill-yellow-500" src={edit} width={25} height={25} alt="edit" />
+                                </button>
+                                <button onClick={() => handleDeleteReport(item.uid)} className="text-red-500">
+                                    <Image className="fill-red-500" src={del} width={25} height={25} alt="del" />
+                                </button>
                             </div>
                         </div>
                     ))}
