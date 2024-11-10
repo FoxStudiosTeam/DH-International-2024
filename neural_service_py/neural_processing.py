@@ -36,18 +36,17 @@ class Process:
 
         model: YOLO = YOLO(model_path)
         report: list[ReportUnit] = []
-        count: int = 0
+        # count: int = 0
         batch: int = 0
         images: list = []
         img_names: list[str] = []
 
         # open zip
         with ZipFile(zip_path) as zip_file:
-
             # file traversal
             for file_name in zip_file.namelist():
-
                 # check to img
+
                 if file_name.endswith((".png", ".jpg", ".jpeg")):
 
                     # open img
@@ -61,17 +60,17 @@ class Process:
                             continue
                         batch = 0
                         if image is not None:
-                            last_time = time.time()
+                            # last_time = time.time()
 
                             # images processing
                             results_batch = model.predict(images)
                             for img, results, img_name in zip(images, results_batch, img_names):
                                 boxes = self.parse_result(results)
-                                flag: bool = False
+                                # flag: bool = False
                                 for box in boxes:
 
                                     # check to confidence
-                                    if box[2] > 0.7:
+                                    if box[2] > 0.5:
                                         img_width = img.shape[1]
                                         img_heght = img.shape[0]
                                         x1, x2 = int((box[1][0] - box[1][2] / 2) * img_width), int(
@@ -95,24 +94,29 @@ class Process:
                                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 4)
 
                                         # flag if boxes exist
-                                        flag = True
+                                        # flag = True
 
+                                        new_str = img_name
+                                        try:
+                                            new_str = img_name.encode('cp437').decode('cp866')
+                                        except UnicodeDecodeError:
+                                            new_str = img_name
                                         # add result dict to report list
-                                        report.append(ReportUnit(img_name, box, report_uid))
-
+                                        report.append(ReportUnit(new_str, box, report_uid))
+                                        new_str = ""
                                 # show img and pring file name
-                                if flag:
-                                    print("/".join(img_name.split('/')[-3:]))
+                                # if flag:
+                                    # print("/".join(img_name.split('/')[-3:]))
                                     # img = cv2.resize(img, (620, 480))
                                     # cv2.imshow("pivo", img)
                                     # cv2.waitKey(1)
                                     # time.sleep(2)
                                     # cv2.destroyAllWindows()
-                                    flag = False
+                                    # flag = False
 
                             # print to test and cleaning lists of images
-                            count += len(images)
-                            print(f"\n{int((time.time() - last_time) * 1000)}мс\n\nОбработано: {count} фото")
+                            # count += len(images)
+                            # print(f"\n{int((time.time() - last_time) * 1000)}мс\n\nОбработано: {count} фото")
                             images.clear()
                             img_names.clear()
                         else:
@@ -133,7 +137,7 @@ class Process:
 
         model: YOLO = YOLO(model_path)
         report: list[ReportUnit] = []
-        count: int = 0
+        # count: int = 0
         batch: int = 0
         images: list = []
         img_names: list[str] = []
@@ -158,13 +162,13 @@ class Process:
                             continue
                         batch = 0
                         if image is not None:
-                            last_time = time.time()
+                            # last_time = time.time()
 
                             # images processing
                             results_batch = model.predict(images)
                             for img, results, img_name in zip(images, results_batch, img_names):
                                 boxes = self.parse_result(results)
-                                flag: bool = False
+                                # flag: bool = False
                                 for box in boxes:
 
                                     # check to confidence
@@ -192,24 +196,30 @@ class Process:
                                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 4)
 
                                         # flag if boxes exist
-                                        flag = True
+                                        # flag = True
 
+                                        new_str = img_name
+                                        try:
+                                            new_str = img_name.encode('cp437').decode('cp866')
+                                        except UnicodeDecodeError:
+                                            new_str = img_name
                                         # add result dict to report list
-                                        report.append(ReportUnit(img_name, box, report_uid))
+                                        report.append(ReportUnit(new_str, box, report_uid))
+                                        new_str = ""
 
                                 # show img and pring file name
-                                if flag:
-                                    print("/".join(img_name.split('/')[-3:]))
+                                # if flag:
+                                #     print("/".join(img_name.split('/')[-3:]))
                                     # img = cv2.resize(img, (620, 480))
                                     # cv2.imshow("pivo", img)
                                     # cv2.waitKey(1)
                                     # time.sleep(2)
                                     # cv2.destroyAllWindows()
-                                    flag = False
+                                    # flag = False
 
                             # print to test and cleaning lists of images
-                            count += len(images)
-                            print(f"\n{int((time.time() - last_time) * 1000)}мс\n\nОбработано: {count} фото")
+                            # count += len(images)
+                            # print(f"\n{int((time.time() - last_time) * 1000)}мс\n\nОбработано: {count} фото")
                             images.clear()
                             img_names.clear()
                         else:
@@ -236,7 +246,7 @@ class Process:
             # images processing
             result = model.predict(img)[0]
             boxes = self.parse_result(result)
-            flag: bool = False
+            # flag: bool = False
             for box in boxes:
 
                 # check to confidence
@@ -264,20 +274,26 @@ class Process:
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 4)
 
                     # flag if boxes exist
-                    flag = True
+                    # flag = True
 
+                    new_str = img_name
+                    try:
+                        new_str = img_name.encode('cp437').decode('cp866')
+                    except UnicodeDecodeError:
+                        new_str = img_name
                     # add result dict to report list
-                    report.append(ReportUnit(img_name, box, report_uid))
+                    report.append(ReportUnit(new_str, box, report_uid))
+                    new_str = ""
 
                 # show img and pring file name
-                if flag:
-                    print(img_name)
+                # if flag:
+                #     print(img_name)
                     # img = cv2.resize(img, (620, 480))
                     # cv2.imshow("pivo", img)
                     # cv2.waitKey(1)
                     # time.sleep(2)
                     # cv2.destroyAllWindows()
-                    flag = False
+                    # flag = False
         else:
             print(f"Нет изображения в {img_name}")
         return report
